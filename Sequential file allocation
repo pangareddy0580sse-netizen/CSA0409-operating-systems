@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    int n, choice, pos;
+    char file[50][50];
+
+    printf("Enter number of records: ");
+    scanf("%d", &n);
+
+    printf("Enter file records:\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%s", file[i]);
+    }
+
+    while (1) {
+        printf("\n1. Display all records\n2. Access a record\n3. Exit\nEnter choice: ");
+        scanf("%d", &choice);
+
+        if (choice == 1) {
+            printf("File contents (Sequential Allocation):\n");
+            for (int i = 0; i < n; i++) {
+                printf("Record %d: %s\n", i + 1, file[i]);
+            }
+        } 
+        else if (choice == 2) {
+            printf("Enter record number to access (1 to %d): ", n);
+            scanf("%d", &pos);
+
+            if (pos < 1 || pos > n) {
+                printf("Invalid record number!\n");
+            } else {
+                printf("Accessing record %d sequentially:\n", pos);
+                for (int i = 0; i < pos; i++) {
+                    printf("Record %d: %s\n", i + 1, file[i]);
+                }
+            }
+        } 
+        else if (choice == 3) {
+            break;
+        } 
+        else {
+            printf("Invalid choice!\n");
+        }
+    }
+
+    return 0;
+}
+
+OUTPUT
+Enter number of records: 4
+Enter file records:
+A
+B
+C
+D
+
+1. Display all records
+2. Access a record
+3. Exit
+Enter choice: 2
+Enter record number to access (1 to 4): 2
+Accessing record 2 sequentially:
+Record 1: A
+Record 2: B
