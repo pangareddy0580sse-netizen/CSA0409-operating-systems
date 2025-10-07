@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <fcntl.h>    // for open()
+#include <unistd.h>   // for read(), write(), close()
+
+int main() {
+    int fd;
+    char write_buf[] = "Hello, I am Jeevan\n";
+    char read_buf[100];
+
+    // Create and open a file for writing
+    fd = open("demo.txt", O_CREAT | O_WRONLY, 0644);
+    if (fd < 0) {
+        perror("Error opening file");
+        return 1;
+    }
+
+    // Write data to the file
+    write(fd, write_buf, sizeof(write_buf));
+
+    // Close the file
+    close(fd);
+
+    // Reopen the file for reading
+    fd = open("demo.txt", O_RDONLY);
+    if (fd < 0) {
+        perror("Error opening file for reading");
+        return 1;
+    }
+
+    // Read data from the file
+    read(fd, read_buf, sizeof(read_buf));
+
+    // Display content
+    printf("Data read from file:\n%s", read_buf);
+
+    // Close the file
+    close(fd);
+
+    return 0;
+}
+
+
+OUTPUT:
+Data read from file:
+Hello, I am Jeevan
