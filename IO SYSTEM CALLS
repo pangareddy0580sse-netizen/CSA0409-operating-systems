@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <fcntl.h>     
+#include <unistd.h>    
+#include <sys/stat.h>   
+#include <dirent.h>     
+#include <string.h>
+
+int main() {
+    int fd;
+    struct stat fileStat;
+    struct dirent *de;
+    DIR *dr;
+    fd = open("sample.txt", O_CREAT | O_RDWR, 0644);
+    if (fd < 0) {
+        perror("Error opening file");
+        return 1;
+}
+    int flags = fcntl(fd, F_GETFL);
+    printf("File descriptor flags: %d\n", flags);
+
+    write(fd, "Hello UNIX I/O\n", 15);
+
+    lseek(fd, 0, SEEK_SET);
+    printf("File pointer moved to beginning using lseek()\n");
+
+    if (stat("sample.txt", &fileStat) == 0) {
+        printf("File Size: %ld bytes\n", fileStat.st_size);
+        printf("File Permissions: %o\n", fileStat.st_mode & 0777);
+        printf("Number of Links: %ld\n", fileStat.st_nlink);
+    } else {
+        perror("stat error");
+    }
+
+    close(fd);
+
+    dr = opendir(".");
+    if (dr == NULL) {
+        perror("Could not open current directory");
+        return 1;
+    }
+
+    printf("\nFiles in current directory:\n");
+    while ((de = readdir(dr)) != NULL)
+        printf("%s\n", de->d_name);
+
+    closedir(dr);
+
+    return 0;
+}
+
+OUTPUT:
+File descriptor flags: 2
+File pointer moved to beginning using lseek()
+File Size: 15 bytes
+File Permissions: 644
+Number of Links: 1
+
+Files in current directory:
+.
+..
+sample.txt
+demo.txt
+a.out
+program.c
