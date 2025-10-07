@@ -1,0 +1,37 @@
+#include <stdio.h>
+
+void showPermission(int value) {
+    // Print permission based on each bit (r=4, w=2, x=1)
+    printf("%c", (value & 4) ? 'r' : '-');
+    printf("%c", (value & 2) ? 'w' : '-');
+    printf("%c", (value & 1) ? 'x' : '-');
+}
+
+int main() {
+    int perm;
+    int owner, group, others;
+
+    printf("Enter file permission (e.g., 755): ");
+    scanf("%d", &perm);
+
+    // Extract digits for owner, group, others
+    owner = perm / 100;
+    group = (perm / 10) % 10;
+    others = perm % 10;
+
+    printf("\nFile Permissions Simulation:\n");
+    printf("Owner  : "); showPermission(owner);  printf("\n");
+    printf("Group  : "); showPermission(group);  printf("\n");
+    printf("Others : "); showPermission(others); printf("\n");
+
+    return 0;
+}
+
+
+OUTPUT:Enter file permission (e.g., 755): 754
+
+
+File Permissions Simulation:
+Owner  : rwx
+Group  : r-x
+Others : r--
